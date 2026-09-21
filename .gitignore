@@ -3,10 +3,16 @@
 .env*.local
 *.env
 
-# Dependencies & build outputs
+# Next.js build and dependencies
 node_modules/
+.next/
+out/
 dist/
 build/
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
 
 # Operating System files
 .DS_Store
