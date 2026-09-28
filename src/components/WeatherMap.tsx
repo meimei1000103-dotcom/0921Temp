@@ -91,33 +91,34 @@ export const WeatherMap: React.FC<WeatherMapProps> = ({
     );
   }, [stations, searchQuery]);
 
-  // Create custom marker icons for counties
+  // Create custom marker icons for counties with Pin design & Weather Phenomenon (Wx)
   const createCountyIcon = (county: CountyWeather, isSelected: boolean) => {
     const tempMax = parseFloat(county.currentForecast.maxTemp) || 28;
     const tempMin = parseFloat(county.currentForecast.minTemp) || 22;
     const avgTemp = Math.round((tempMax + tempMin) / 2);
     const rainProb = parseFloat(county.currentForecast.rainProb) || 0;
+    const wx = county.currentForecast.weather || "晴時多雲";
     const tempColor = getTempColor(avgTemp);
-    const isRaining = rainProb >= 40;
+    const isMajorCity = ["臺北市", "台北市", "臺中市", "台中市", "高雄市"].includes(county.name);
 
     const html = `
-      <div class="weather-badge ${isSelected ? "selected" : ""}" style="background-color: rgba(15, 23, 42, 0.9); border-color: ${tempColor.color};">
-        <span style="color: ${tempColor.color}; font-size: 13px;">${avgTemp}°C</span>
-        <span style="color: #cbd5e1; font-size: 12px; margin-left: 2px;">${county.name.replace("臺", "台")}</span>
-        ${
-          isRaining
-            ? `<span style="color: #38bdf8; font-size: 11px; margin-left: 2px;">💧${rainProb}%</span>`
-            : ""
-        }
+      <div class="weather-pin-container ${isSelected ? "selected" : ""} ${isMajorCity ? "major-city" : ""}">
+        <div class="weather-pin-body" style="border-color: ${tempColor.color}; background: rgba(15, 23, 42, 0.95);">
+          ${isMajorCity ? `<span class="pin-star">★</span>` : ""}
+          <span class="pin-city">${county.name.replace("臺", "台")}</span>
+          <span class="pin-wx" title="${wx}">${wx}</span>
+          <span class="pin-temp" style="color: ${tempColor.color};">${avgTemp}°C</span>
+        </div>
+        <div class="weather-pin-arrow" style="border-top-color: ${tempColor.color};"></div>
       </div>
     `;
 
     return L.divIcon({
       html,
-      className: "custom-weather-marker",
-      iconSize: [110, 32],
-      iconAnchor: [55, 16],
-      popupAnchor: [0, -18],
+      className: "custom-weather-pin-marker",
+      iconSize: [isMajorCity ? 140 : 120, 42],
+      iconAnchor: [isMajorCity ? 70 : 60, 42],
+      popupAnchor: [0, -42],
     });
   };
 
@@ -143,9 +144,9 @@ export const WeatherMap: React.FC<WeatherMapProps> = ({
     });
   };
 
-  // Center on Taiwan
-  const defaultCenter: [number, number] = [23.7, 120.9];
-  const defaultZoom = 7.5;
+  // Center on Taichung Dali area (24.1, 120.68) with zoom 7 as requested
+  const defaultCenter: [number, number] = [24.1, 120.68];
+  const defaultZoom = 7;
 
   const focusTarget = useMemo(() => {
     if (selectedCounty) {
@@ -158,7 +159,7 @@ export const WeatherMap: React.FC<WeatherMapProps> = ({
   }, [selectedCounty, selectedStation]);
 
   return (
-    <div className="relative w-full h-[calc(100vh-140px)] min-h-[500px] rounded-2xl overflow-hidden shadow-2xl border border-white/10">
+    <div className="relative w-full h-[calc(100vh-140px)] min-h-[550px] rounded-2xl overflow-hidden shadow-2xl border border-white/10">
       <MapContainer
         center={defaultCenter}
         zoom={defaultZoom}
