@@ -171,24 +171,19 @@ export const WeatherMap: React.FC<WeatherMapProps> = ({
 
         {/* Base Map Layers */}
         <LayersControl position="topright">
-          <LayersControl.BaseLayer checked name="深色科技地圖 (CartoDB Dark)">
+          <LayersControl.BaseLayer checked name="OpenStreetMap 標準地圖 (免費)">
             <TileLayer
-              attribution='&copy; <a href="https://carto.com/">CARTO</a>'
-              url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-            />
-          </LayersControl.BaseLayer>
-
-          <LayersControl.BaseLayer name="清晰標準地圖 (OSM)">
-            <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              maxZoom={19}
             />
           </LayersControl.BaseLayer>
 
-          <LayersControl.BaseLayer name="夜間衛星底圖 (CartoDB Voyager)">
+          <LayersControl.BaseLayer name="Esri 衛星影像圖 (免費)">
             <TileLayer
-              attribution='&copy; <a href="https://carto.com/">CARTO</a>'
-              url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+              attribution='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+              url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+              maxZoom={18}
             />
           </LayersControl.BaseLayer>
         </LayersControl>
