@@ -4,6 +4,8 @@
 
 🔗 **即時展示網址**：[https://0921-temp.vercel.app](https://0921-temp.vercel.app)
 
+![台灣氣象地圖預覽](demo.jpg)
+
 ---
 
 ## 🚀 專案簡介 (Overview)
